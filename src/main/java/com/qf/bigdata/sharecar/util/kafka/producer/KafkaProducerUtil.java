@@ -70,7 +70,7 @@ public class KafkaProducerUtil {
 
         try{
             Properties props = KafkaUtil.readKafkaProps(path);
-            KafkaProducer<String, Serializable>  producer = new KafkaProducer<String, Serializable>(props);
+            KafkaProducer<String, Serializable> producer = new KafkaProducer<String, Serializable>(props);
 
             if(null != producer){
 
@@ -97,8 +97,8 @@ public class KafkaProducerUtil {
 
     public static void testJson4While(String topic, int locusCount,String beginDay, String endDay, String dayBegin,String dayEnd,long sleep) throws Exception{
         //发送序列化对象
-        String dateFormatter = CommonConstant.FORMATTER_YYYYMMDDHHMMDD;
-        String dayFormatter = CommonConstant.FORMATTER_YYYYMMDD;
+        String dateFormatter = "yyyyMMddHHmmss";
+        String dayFormatter = "yyyyMMdd";
         ChronoUnit chronoUnit = ChronoUnit.MINUTES;
         ChronoUnit dayChronoUnit = ChronoUnit.DAYS;
 
@@ -137,13 +137,15 @@ public class KafkaProducerUtil {
 
     public static void main(String[] args) throws  Exception {
 
-        String topic = CommonConstant.TOPIC_SHARE_CAR_TEST;
-        long sleep = 100 * 1;
+//        String topic = CommonConstant.TOPIC_SHARE_CAR_TEST;
+        String topic = "topic-sharecar-1901";
+//        String topic = "GMALL_STARTUP";
+        long sleep = 300 * 1;
         int locusCount = 10;
-        String beginDay = "20190628";
-        String endDay = "20190628";
-        String dayBegin = "142000";
-        String dayEnd = "143000";
+        String beginDay = "20191110";
+        String endDay = "20191111";
+        String dayBegin = "190000";
+        String dayEnd = "191000";
         testJson4While(topic, locusCount, beginDay, endDay,dayBegin, dayEnd,sleep);
         System.out.println("Game Over!");
 

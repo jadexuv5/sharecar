@@ -106,6 +106,13 @@ public class CommonConstant implements Serializable {
     public final static Double LATITUDE_CHINA_MAX = 53.55; //纬度
     public final static Double LATITUDE_CHINA_MIN = 3.86; //纬度
 
+
+//    public final static Double LONGITUDE_CHINA_MAX = 135.05; //经度
+//    public final static Double LONGITUDE_CHINA_MIN = 73.66; //经度
+//
+//    public final static Double LATITUDE_CHINA_MAX = 53.55; //纬度
+//    public final static Double LATITUDE_CHINA_MIN = 3.86; //纬度
+
     //北京行政中心的纬度为39.92，经度为116.46
     //北京 北纬39”26'至41”03'，东经115”25'至117”30'
     public final static Double LONGITUDE_BJ_MAX = 117.30; //经度

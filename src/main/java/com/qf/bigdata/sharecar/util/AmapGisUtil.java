@@ -48,7 +48,8 @@ public class AmapGisUtil implements Serializable {
     /**
      * 高德地图请求秘钥
      */
-    private static final String KEY = "";
+//    private static final String KEY = "83c744016bbc5d85b429516831979886";
+    private static final String KEY = "ca330934153a5ce6407f0a68622ce637";
     /**
      * 返回值类型
      */
@@ -200,15 +201,21 @@ public class AmapGisUtil implements Serializable {
     }
 
 
-    public static Double getRandomGIS4BJ(String cityCode,String dict){
+    /**
+     * 全国
+     * @param dict
+     * @return
+     */
+    public static Double getRandomGIS(String dict){
         Double value = null;
         boolean flag = true;
-        if(StringUtils.isNotEmpty(cityCode) && StringUtils.isNotEmpty(dict)){
-            int vMin = CommonConstant.LONGITUDE_BJ_MIN.intValue();
-            int vMax = CommonConstant.LONGITUDE_BJ_MAX.intValue();
+        if(StringUtils.isNotEmpty(dict)){
+            int vMin = CommonConstant.LONGITUDE_CHINA_MIN.intValue();
+            int vMax = CommonConstant.LONGITUDE_CHINA_MAX.intValue();
             if(KEY_LAT.equalsIgnoreCase(dict)){
-                vMin = CommonConstant.LATITUDE_BJ_MIN.intValue();
-                vMax = CommonConstant.LATITUDE_BJ_MAX.intValue();
+                vMin = CommonConstant.LATITUDE_CHINA_MIN.intValue();
+                vMax = CommonConstant.LATITUDE_CHINA_MAX.intValue();
+
             }
             int range = vMax - vMin;
             while(flag){
@@ -240,6 +247,12 @@ public class AmapGisUtil implements Serializable {
     }
 
 
+    /**
+     * 北京
+     * @param cityCode
+     * @param dict
+     * @return
+     */
     public static Double getQFGIS4BJ(String cityCode,String dict){
         Double value = null;
         boolean flag = true;
@@ -288,6 +301,51 @@ public class AmapGisUtil implements Serializable {
      * @return
      */
     public static List<Object[]> createRandomGISDatas(int count){
+        List<Object[]> datas = new ArrayList<Object[]>();
+        if(count <= 10000){
+            for(int i=1;i<=count;i++){
+                try{
+                    double gdLon = getRandomGIS(KEY_LNG);
+                    double gdLat = getRandomGIS(KEY_LAT);
+                    //"longitude","latitude","adcode","province","district","towncode","township","formatted_address"
+                    Map<String,String> resp = AmapGisUtil.getLngAndLat(GET_ADDRESS_URL, KEY, OUTPUT_FORMAT, gdLon, gdLat);
+                    log.info("gis={}", JSONObject.toJSON(resp));
+
+                    String reqDatas = resp.getOrDefault(RESULT_REQUET_KEY,"");
+                    String respDatas = resp.getOrDefault(RESULT_RESPONSE_KEY,"");
+
+                    String longitude = JsonPath.parse(reqDatas).read("$."+KEY_LNG+"");
+                    String latitude = JsonPath.parse(reqDatas).read("$."+KEY_LAT+"");
+
+                    String adcode = JsonPath.parse(respDatas).read("$.regeocode.addressComponent.adcode").toString();
+                    String province = JsonPath.parse(respDatas).read("$.regeocode.addressComponent.province").toString();
+                    String district = JsonPath.parse(respDatas).read("$.regeocode.addressComponent.district").toString();
+                    //String towncode = JsonPath.parse(respDatas).read("$.regeocode.addressComponent.towncode");
+                    //String township = JsonPath.parse(respDatas).read("$.regeocode.township");
+                    String address = JsonPath.parse(respDatas).read("$.regeocode.formatted_address").toString();
+
+                    Object[] csvDatas = new Object[]{longitude, latitude,
+                            adcode, province, district,
+                            address
+                    };
+
+                    datas.add(csvDatas);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return datas;
+    }
+
+
+
+    /**
+     * 制造gis数据
+     * @param count
+     * @return
+     */
+    public static List<Object[]> createRandomGISDatas4BJ(int count){
         List<Object[]> datas = new ArrayList<Object[]>();
         if(count <= 10000){
             for(int i=1;i<=count;i++){
@@ -348,8 +406,9 @@ public class AmapGisUtil implements Serializable {
 //            log.info("gis={}", JSONObject.toJSON(resp));
 //        }
 
-        String outpath = "D:/demoworkspace/sharecar/src/main/resources/areacode/gis_location.csv";
-        int count = 500;
+//        String outpath = "D:/qfBigWorkSpace/sharecar/src/main/resources/areacode/china_gis_location.csv";
+        String outpath = "files/china_gis_location1.csv";
+        int count = 10;
         List<Object[]> gisdatas = createRandomGISDatas(count);
         createRandomGIS(outpath, gisdatas);
 

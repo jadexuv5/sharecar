@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Nov 14 10:33:01 CST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-016e-67c1-c181-00000a685f48 
+on database directory /Users/xujiandong/IDEA-workspace/sharecar/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@f91da5e 
+Loaded from file:/usr/local/maven/repos/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_181-b13
+user.dir=/Users/xujiandong/IDEA-workspace/sharecar
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

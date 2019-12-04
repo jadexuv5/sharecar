@@ -176,6 +176,47 @@ object LocusMessageHandler {
     }
   }
 
+  def handleLocusMessageDF2(spark:SparkSession, appName :String, topic:String, output:String, groupID:String) :Unit = {
+    val begin = System.currentTimeMillis()
+    try{
+      import org.apache.spark.sql.functions._
+      import spark.implicits._
+
+      import scala.collection.JavaConverters._
+
+
+
+      //构造数据集（流式）
+      val df = spark.readStream.format("kafka")
+        .option("kafka.bootstrap.servers", "node242:9092,node243:9092,node244:9092")
+        .option("subscribe", "topic-sharecar-1901")
+        .option("group.id", "group-1901-2")
+        .option("startingOffsets","latest")
+        .option("failOnDataLoss","false")
+        .load()
+
+
+      val ndf = df.writeStream.format("parquet")
+        .option(ShareCarConstant.SPARK_SSM_OPTIONS_KEY_PATH, output)
+        .option(ShareCarConstant.SPARK_SSM_OPTIONS_KEY_CHECKPOINT, ShareCarConstant.SPARK_SSTREAMING_LOCUS_ODS_CHECKPOINT)
+        .outputMode(OutputMode.Append())
+        .start()
+
+      ndf.awaitTermination()
+
+
+
+
+    }catch{
+      case ex:Exception => {
+        println(s"LocusMessageHandler.handleLocusMessage occur exception：app=[$appName], msg=$ex")
+        LOG.error(ex.getMessage, ex)
+      }
+    }finally {
+      println(s"LocusMessageHandler.handleLocusMessage End：appName=[${appName}], use=[${System.currentTimeMillis() - begin}]")
+    }
+  }
+
 
 
   /**
@@ -204,7 +245,7 @@ object LocusMessageHandler {
       spark = SparkHelper.createSparkNotHive(sconf)
 
 
-      handleLocusMessageDF(spark, appName, topic, output, groupID)
+      handleLocusMessageDF2(spark, appName, topic, output, groupID)
 
 
     }catch{
@@ -226,10 +267,10 @@ object LocusMessageHandler {
 
     //val Array(appName, groupID, topic, output) = args
 
-    val appName: String = "qf_sss_sharecar_locus_ods"
-    val output :String = "/data/sharecar/kafka/locus/ods/"
-    val groupID :String = "qf_sss_sharecar_locus_ods"
-    val topic :String = CommonConstant.TOPIC_SHARE_CAR_TEST
+    val appName: String = "qf_1901_sharecar_locus_ods"
+    val output :String = "/data/sharecar/kafka/locus/ods/1901_jade_01"
+    val groupID :String = "qf_1901_sharecar_locus_ods"
+    val topic :String = "topic-sharecar-1901"
 
     val begin = System.currentTimeMillis()
     handleStreamingJobs(appName,topic, output, groupID)

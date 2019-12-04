@@ -61,7 +61,7 @@ object LocusMessageAggHandler {
 
       //kafka数据解析
       val locusColumns :Seq[String] = LocusMessageColumnHelper.getStreamingOutPutColumn()
-      val locusDF = kafkaDF.selectExpr(locusColumns:_*)
+      val locusDF: DataFrame = kafkaDF.selectExpr(locusColumns:_*)
       locusDF.printSchema()
 
       //输出hdfs

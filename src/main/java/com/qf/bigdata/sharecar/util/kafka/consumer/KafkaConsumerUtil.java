@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * Created by hp on 2017/5/19.
  */
-public class KafkaConsumerUtil {
+public class  KafkaConsumerUtil {
 
     /**
      * 消费(text)
