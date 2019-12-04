@@ -34,7 +34,7 @@
         <scala.version>2.11.8</scala.version>
         <hadoop.version>2.7.6</hadoop.version>
         <hive.version>2.1.1</hive.version>
-        <spark.version>2.2.3</spark.version>
+        <spark.version>2.4.4</spark.version>
         <kylin.jdbc.version>2.3.2</kylin.jdbc.version>
         <hbase.version>1.2.12</hbase.version>
         <zk.client.version>0.11</zk.client.version>
