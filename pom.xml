@@ -28,7 +28,7 @@
         <commons-io.version>2.4</commons-io.version>
         <commons-csv.version>1.6</commons-csv.version>
         <mysql.jdbc.version>5.1.44</mysql.jdbc.version>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
 
         <!-- bigdata -->
         <scala.version>2.11.8</scala.version>
